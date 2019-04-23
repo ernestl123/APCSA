@@ -24,11 +24,13 @@ public class Alien extends MovingThing
 	public Alien(int x, int y)
 	{
 		//add code here
+            this(x, y, 30, 30, 2);
 	}
 
 	public Alien(int x, int y, int s)
 	{
 		//add code here
+            this(x, y, 30, 30, s);
 	}
 
 	public Alien(int x, int y, int w, int h, int s)
@@ -37,7 +39,7 @@ public class Alien extends MovingThing
 		speed=s;
 		try
 		{
-			URL url = getClass().getResource("/images/alien.jpg");
+			URL url = getClass().getResource("alien.jpg");
 			image = ImageIO.read(url);
 		}
 		catch(Exception e)
@@ -49,16 +51,29 @@ public class Alien extends MovingThing
 	public void setSpeed(int s)
 	{
 	   //add code
+            speed =s;
 	}
 
 	public int getSpeed()
 	{
-	   return 0;
+	   return speed;
 	}
 
    public void move(String direction)
 	{
 	   //add code here
+            if (direction.equals("LEFT")){
+                setX(this.getX()-getSpeed());
+            }
+            else if (direction.equals("RIGHT")){
+                setX(this.getX()+speed);
+            }
+            else if (direction.equals("UP")){
+                setY(this.getY()-speed);
+            }
+            else{
+                setY(this.getY() + speed);
+            }
 	}
 
 	public void draw( Graphics window )

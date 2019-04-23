@@ -18,7 +18,7 @@ public class Ship extends MovingThing
 
 	public Ship()
 	{
-		this(10,10,10,10,10);
+		this(10,10,30,30,4);
 	}
 
 	public Ship(int x, int y)
@@ -40,7 +40,9 @@ public class Ship extends MovingThing
 		try
 		{
 			
-			image = ImageIO.read(new FileInputStream("resources/ship.jpg"));
+			URL url = getClass().getResource("ship.jpg");
+                        System.out.println(url);
+			image = ImageIO.read(url);
                         
 		}
 		catch(Exception e)
@@ -66,16 +68,16 @@ public class Ship extends MovingThing
 	{
 		//add code here
             if (direction.equals("LEFT")){
-                this.setX(this.getX()-speed);
+                setX(this.getX()-getSpeed());
             }
             else if (direction.equals("RIGHT")){
-                this.setX(this.getX()+speed);
+                setX(this.getX()+speed);
             }
             else if (direction.equals("UP")){
-                this.setY(this.getY()-speed);
+                setY(this.getY()-speed);
             }
             else{
-                this.setY(this.getY() + speed);
+                setY(this.getY() + speed);
             }
 	}
 
