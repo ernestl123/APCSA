@@ -89,7 +89,24 @@ public abstract class MovingThing implements Moveable
 	{
 		return height;  //finish this method
 	}
-
+        public boolean isCollide(MovingThing mt)
+	{
+		if (partialCollision(this.getX(), this.getY() + this.getHeight() / 2, mt))
+			return true;
+		else if (partialCollision(this.getX() + this.getWidth(), this.getY() + this.getHeight() / 2, mt))
+			return true;
+		else if (partialCollision(this.getX() + this.getWidth() / 2, this.getY(), mt))
+			return true;
+		else if (partialCollision(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight(), mt))
+			return true;
+		return false;
+	}
+	
+	private boolean partialCollision(int pointX, int pointY, MovingThing mt) 
+	{
+		return pointX > mt.getX() && pointX < mt.getX() + mt.getWidth() && pointY > mt.getY()
+				&& pointY < mt.getY() + mt.getHeight();
+	}
 	public abstract void move(String direction);
 	public abstract void draw(Graphics window);
 
