@@ -87,6 +87,39 @@ public class Picture extends SimplePicture
     
   }
   
+  public void blur(int x, int y, int w, int h){
+    Pixel[][] pixels = this.getPixels2D();
+    for (int row = x; row < x+h; row++)
+    {
+      for (int col = y; col < y+w; col++)
+      {
+          Pixel p = pixels[row][col];
+          int avgR = p.getRed();
+          int avgG = p.getGreen();
+          int avgB = p.getBlue();
+          int count = 1;
+          for (int tempRow = row - 1; tempRow <= row + 1; tempRow++)
+            {
+                    for (int tempCol = col - 1; tempCol <= col + 1; tempCol++)
+                    {
+                            Pixel tempP = pixels[tempRow][tempCol];
+                            avgR +=tempP.getRed();
+                            avgG += tempP.getGreen();
+                            avgB +=tempP.getBlue();
+                            count++;
+                    }
+            }
+          
+            avgR /= count;
+            avgB /= count;
+            avgG /= count;
+
+            Color avgColor = new Color(avgR, avgB, avgG);
+
+            pixels[row][col].setColor(avgColor);
+      }
+    } 
+  }
   /** Method to set the blue to 0 */
   public void zeroBlue()
   {
