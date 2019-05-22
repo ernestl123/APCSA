@@ -4,30 +4,30 @@
  * and open the template in the editor.
  */
 package JavaProject;
-
+import java.time.LocalDate;
 /**
  *
  * @author line8847
  */
 public class Events {
-    private int date;
-    private String description;
+    private LocalDate date;
+    private String info;
     
-    public Events(int date, String description){
-        this.date = date;
-        this.description = description;
+    public Events(int year, int month, int day, String info){
+        this.date = LocalDate.of(year, month, day);
+        this.info = info;
         
     }
     
-    public int getDate(){
+    public LocalDate getDate(){
         return date;
     }
     
-    public String getDes(){
-        return description;
+    public String getInfo(){
+        return info;
     }
     
     public String toString(){
-        return date + " " + description;
+        return date + " " + info;
     }
 }

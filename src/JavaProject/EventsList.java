@@ -7,6 +7,8 @@ package JavaProject;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 /**
  *
  * @author line8847
@@ -22,10 +24,28 @@ public class EventsList {
         eventList.add(e);
     }
     
+    public List<Events> getList(){
+        return eventList;
+    }
+    
     public void organize(){
-        LocalDate myObj = LocalDate.now();
+        LocalDate current = LocalDate.now();
+        ArrayList<Events> temp = new ArrayList<Events>();
         for (Events e: eventList){
-            if 
+            LocalDate d = e.getDate();
+            if (!(d.compareTo(current) < 0)){
+                temp.add(e);
+            }
         }
+        Collections.sort(temp, new Comparator<Events>(){
+             public int compare(Events e1, Events e2) {
+               return e1.getDate().compareTo(e2.getDate());
+            }
+        });
+        eventList = new ArrayList<Events>();
+        for (Events e: temp){
+            eventList.add(e);
+        }
+        
     }
 }
