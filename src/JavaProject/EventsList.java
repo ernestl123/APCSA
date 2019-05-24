@@ -29,6 +29,7 @@ public class EventsList {
     }
     
     public void organize(){
+        //Removes all expired events
         LocalDate current = LocalDate.now();
         ArrayList<Events> temp = new ArrayList<Events>();
         for (Events e: eventList){
@@ -37,11 +38,13 @@ public class EventsList {
                 temp.add(e);
             }
         }
+        //Sorts all event objects by date
         Collections.sort(temp, new Comparator<Events>(){
              public int compare(Events e1, Events e2) {
                return e1.getDate().compareTo(e2.getDate());
             }
         });
+        //Make new organized list
         eventList = new ArrayList<Events>();
         for (Events e: temp){
             eventList.add(e);

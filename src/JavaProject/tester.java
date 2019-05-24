@@ -34,6 +34,7 @@ public class tester {
         
         for (Events s: e.getList()){
             System.out.println(s.getDate());
+            System.out.println(s.getInfo());
         }
         
     }

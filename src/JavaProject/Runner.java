@@ -22,7 +22,7 @@ public class Runner extends JFrame
 		super("Events");
 		setSize(WIDTH,HEIGHT);
 
-		//getContentPane().add(new WinterScenePanel());
+		
 
 		setVisible(true);
 
