@@ -12,7 +12,20 @@ import java.time.LocalDate;
 public class Events {
     private LocalDate date;
     private String info;
+    private String[] stuff = {"", "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"};
     
+    public Events(int year, String month, int day, String info){
+        int monthValue =1;
+        for (int i = 0; i < stuff.length; i++){
+            if (stuff[i].equals(month)){
+                monthValue = i;
+                break;
+            }
+        }
+        this.date = LocalDate.of(year, monthValue, day);
+        this.info = info;
+        
+    }
     public Events(int year, int month, int day, String info){
         this.date = LocalDate.of(year, month, day);
         this.info = info;
@@ -28,6 +41,6 @@ public class Events {
     }
     
     public String toString(){
-        return date + " " + info;
+        return date.getYear() + " " + date.getMonth() + " " + date.getDayOfMonth() + " " + info;
     }
 }
