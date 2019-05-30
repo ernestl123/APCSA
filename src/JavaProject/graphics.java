@@ -35,13 +35,7 @@ public class graphics extends Canvas implements Runnable {
     }
     public void paint(Graphics window){
         JFrame f = new JFrame("Text Field Examples");
-        f.getContentPane().setLayout(new FlowLayout());
-        textfield1 = new JTextField("Text field 1",10);
-        textfield2 = new JTextField("Text field 2",10);
-        textfield3 = new JTextField("Text field 3",10);
-        f.getContentPane().add(textfield1);
-        f.getContentPane().add(textfield2);
-        f.getContentPane().add(textfield3);
+
         f.pack();
         f.setVisible(true);
     }

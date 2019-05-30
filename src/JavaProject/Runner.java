@@ -22,12 +22,9 @@ public class Runner extends JFrame
 		super("Events");
 		setSize(WIDTH,HEIGHT);
 
-		graphics g = new graphics();
+		new eventsFrame().setVisible(true);
 
-                ((Component) g).setFocusable(true);
-                getContentPane().add(g);
 
-		setVisible(true);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
