@@ -7,25 +7,38 @@ package JavaProject;
 
 import java.io.*;
 import java.util.Scanner;
+import java.io.File;
+
 
 /**
  *
  * @author line8847
  */
-public class Data {
-    public boolean findData(String s1, String s2, String fileName) throws IOException{
-       Scanner file = new Scanner(new File(fileName));
-       boolean found = false;
-        int size = file.nextInt();
-        file.nextLine();
-
-        for (int i = 0; i < size; i++){
-            String temp = file.nextLine();
-            if (temp.substring(0, temp.indexOf((" "))).equals(s1) && temp.substring(temp.indexOf(" ")+1).equals(s2)){
-                found = true;
-            }
-            file.nextLine();
-        }
-        return found;
+public abstract class Data {
+    public Data(){
+        
     }
+    public boolean findData(String fileName, String s) throws IOException{
+        Scanner file = new Scanner(new File(fileName));
+        while(file.hasNextLine()){
+            String temp = file.nextLine();
+            if (temp.equals(s)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void recordData(String fileName, String s) throws IOException{
+        
+        
+        BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true)); 
+        
+        writer.write(s);
+        writer.newLine();
+        writer.close();
+        
+                
+    }
+    
 }

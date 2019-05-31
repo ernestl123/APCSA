@@ -4,27 +4,35 @@
  * and open the template in the editor.
  */
 package JavaProject;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Scanner;
+import java.io.*;
 /**
  *
  * @author line8847
  */
-public class EventsList implements Comparator{
-    private List<Events> eventList;
+public class EventsList extends Data implements Comparator {
+    private ArrayList<Events> eventList;
     
     public EventsList(){
         eventList = new ArrayList<Events>();
     }
     
-    public void addEvent(Events e){
+    public void addEvent(Events e) throws IOException{
         eventList.add(e);
+        
+        organize();
+    }
+    public void record(Events e, String fileName) throws IOException{
+        super.recordData(fileName, e.toString());
     }
     
-    public List<Events> getList(){
+    public ArrayList<Events> getList(){
         return eventList;
     }
     
@@ -56,6 +64,13 @@ public class EventsList implements Comparator{
         for (Events e: temp){
             eventList.add(e);
         }
-        
     }
-}
+       
+    }
+        
+    
+    
+    
+    
+
+

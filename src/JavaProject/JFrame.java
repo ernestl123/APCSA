@@ -5,7 +5,10 @@
  */
 package JavaProject;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.*;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -14,11 +17,13 @@ import java.util.Scanner;
  * @author line8847
  */
 public class JFrame extends javax.swing.JFrame{
-
+    UserList u;
     /**
      * Creates new form JFrame
      */
-    public JFrame() {
+    public JFrame() throws IOException{
+
+        u = new UserList();
         initComponents();
     }
 
@@ -38,6 +43,7 @@ public class JFrame extends javax.swing.JFrame{
         jLabel2 = new javax.swing.JLabel();
         errorText = new javax.swing.JLabel();
         loginB = new javax.swing.JButton();
+        createB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,10 +54,17 @@ public class JFrame extends javax.swing.JFrame{
 
         jLabel2.setText("Password:");
 
-        loginB.setText("Enter");
+        loginB.setText("Login");
         loginB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginBActionPerformed(evt);
+            }
+        });
+
+        createB.setText("Create Account");
+        createB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createBActionPerformed(evt);
             }
         });
 
@@ -65,6 +78,9 @@ public class JFrame extends javax.swing.JFrame{
                         .addGap(138, 138, 138)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(223, 223, 223)
+                        .addComponent(errorText))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(128, 128, 128)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(userLabel)
@@ -72,15 +88,14 @@ public class JFrame extends javax.swing.JFrame{
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(pw, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(username)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(223, 223, 223)
-                        .addComponent(errorText)))
+                            .addComponent(username))))
                 .addContainerGap(148, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(loginB)
-                .addGap(214, 214, 214))
+                .addGap(18, 18, 18)
+                .addComponent(createB)
+                .addGap(135, 135, 135))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -98,7 +113,9 @@ public class JFrame extends javax.swing.JFrame{
                     .addComponent(pw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(loginB)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(loginB)
+                    .addComponent(createB))
                 .addContainerGap(108, Short.MAX_VALUE))
         );
 
@@ -107,10 +124,53 @@ public class JFrame extends javax.swing.JFrame{
 
     private void loginBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBActionPerformed
         // TODO add your handling code here:
-        System.out.println("hi");
-        boolean stuff = findData(username.getText(), pw.getText(), "src/JavaProject/users.txt");
+        try{
+            boolean stuff = u.findData(username.getText(), pw.getText());
+            if (stuff){
+                Runner r = new Runner(username.getText());
+                setVisible(false);
+            }
+            else{
+                errorText.setText("Sorry. Incorrect username or password.");
+            }
+        }
+        catch(IOException e){
+                System.out.println(e);
+                }
         
     }//GEN-LAST:event_loginBActionPerformed
+
+    private void createBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBActionPerformed
+        // TODO add your handling code here:
+        if (username.getText() == null || username.getText().isEmpty() || username.getText().indexOf(" ") >0){
+            errorText.setText("Error. Invalid username. ");
+        }
+        else if (pw.getText() == null || username.getText().isEmpty()){
+            errorText.setText("Error. Invalid password.");
+        }
+        else{
+            try{
+                boolean stuff = u.findData(username.getText(), pw.getText());
+                if (!stuff){
+                    
+                    u.addU(username.getText(), pw.getText());
+                    System.out.println("Created account.");
+                    
+                    File file = new File("src/JavaProject/accounts/"+username.getText()+".txt");
+                    file.createNewFile();
+                    BufferedWriter writer = new BufferedWriter(new FileWriter("src/JavaProject/accounts/"+username.getText()+".txt", true)); 
+                    writer.newLine();
+                    writer.close();
+                }
+                else{
+                    errorText.setText("Sorry. There's already an account created with that username.");
+                }
+            }
+            catch(IOException e){
+                    System.out.println(e);
+                    }
+        }
+    }//GEN-LAST:event_createBActionPerformed
 
     /**
      * @param args the command line arguments
@@ -141,27 +201,20 @@ public class JFrame extends javax.swing.JFrame{
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFrame().setVisible(true);
+            public void run(){
+                try{
+                    new JFrame().setVisible(true);
+                }
+                catch (IOException e){
+                    System.out.println(e);
+                }
+
             }
         });
     }
-    public boolean findData(String s1, String s2, String fileName) throws IOException{
-       Scanner file = new Scanner(new File(fileName));
-       boolean found = false;
-        int size = file.nextInt();
-        file.nextLine();
-
-        for (int i = 0; i < size; i++){
-            String temp = file.nextLine();
-            if (temp.substring(0, temp.indexOf((" "))).equals(s1) && temp.substring(temp.indexOf(" ")+1).equals(s2)){
-                found = true;
-            }
-            file.nextLine();
-        }
-        return found;
-    }
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton createB;
     private javax.swing.JLabel errorText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

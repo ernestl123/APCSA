@@ -17,11 +17,12 @@ public class Events {
     public Events(int year, String month, int day, String info){
         int monthValue =1;
         for (int i = 0; i < stuff.length; i++){
-            if (stuff[i].equals(month)){
+            if (stuff[i].equals(month.toUpperCase())){
                 monthValue = i;
                 break;
             }
         }
+        
         this.date = LocalDate.of(year, monthValue, day);
         this.info = info;
         

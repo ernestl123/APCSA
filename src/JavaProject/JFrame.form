@@ -30,6 +30,10 @@
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="223" max="-2" attributes="0"/>
+                      <Component id="errorText" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="userLabel" min="-2" max="-2" attributes="0"/>
@@ -41,17 +45,15 @@
                           <Component id="username" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="223" max="-2" attributes="0"/>
-                      <Component id="errorText" min="-2" max="-2" attributes="0"/>
-                  </Group>
               </Group>
               <EmptySpace pref="148" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Component id="loginB" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="214" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="createB" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="135" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -73,7 +75,10 @@
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="loginB" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="loginB" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="createB" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace pref="108" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -106,10 +111,18 @@
     </Component>
     <Component class="javax.swing.JButton" name="loginB">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Enter"/>
+        <Property name="text" type="java.lang.String" value="Login"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loginBActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="createB">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Create Account"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createBActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

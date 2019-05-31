@@ -5,17 +5,49 @@
  */
 package JavaProject;
 
+import java.io.*;
+
+import java.util.*;
+import javax.swing.*;
+
 /**
  *
  * @author line8847
  */
 public class eventsFrame extends javax.swing.JFrame {
-
+    private EventsList eList;
+    DefaultListModel model;
+    private String filePath;
     /**
      * Creates new form eventsFrame
      */
-    public eventsFrame() {
+    public eventsFrame(String user) throws IOException {
         initComponents();
+        userLabel.setText(user);
+        model = new DefaultListModel();
+        eList = new EventsList();
+        filePath = "src/JavaProject/accounts/"+user+".txt";
+        Scanner file = new Scanner(new File(filePath));
+        file.nextLine();
+        while (file.hasNextLine()){
+            String temp = file.nextLine();
+            int year = Integer.parseInt(temp.substring(0, temp.indexOf(" ")));
+            int nextIndex = temp.indexOf(" ", temp.indexOf(" ")+1);
+            int dateIndex = temp.indexOf(" ", nextIndex+1);  
+            String month = temp.substring(temp.indexOf(" ")+1, nextIndex);
+            int date = Integer.parseInt(temp.substring(nextIndex+1, dateIndex));
+            String data = temp.substring(dateIndex+1);
+            eList.addEvent(new Events(year, month, date, data));
+        }
+        eList.organize();
+        System.out.println(eList.getList());
+        for (Events e: eList.getList()){
+            model.addElement(e.toString());
+            
+        }
+        allEvents.setModel(model); 
+        
+         
     }
 
     /**
@@ -28,8 +60,6 @@ public class eventsFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
         jLabel2 = new javax.swing.JLabel();
         yearTxt = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -41,10 +71,12 @@ public class eventsFrame extends javax.swing.JFrame {
         infoTxt = new javax.swing.JTextField();
         createB = new javax.swing.JButton();
         refreshB = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        allEvents = new javax.swing.JList();
+        userLabel = new javax.swing.JLabel();
+        error = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jScrollPane2.setViewportView(jList1);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("Create new event:");
@@ -80,12 +112,39 @@ public class eventsFrame extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane1.setViewportView(allEvents);
+
+        userLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        userLabel.setText("You");
+
+        error.setForeground(new java.awt.Color(10, 0, 0));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(52, 52, 52)
+                                .addComponent(jLabel1)))
+                        .addGap(111, 111, 111)
+                        .addComponent(refreshB))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(createB)
+                        .addGap(51, 51, 51)
+                        .addComponent(error))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(infoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                            .addComponent(dateTxt)
+                            .addComponent(monTxt)
+                            .addComponent(yearTxt)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(54, 54, 54)
                         .addComponent(jLabel3))
@@ -96,54 +155,44 @@ public class eventsFrame extends javax.swing.JFrame {
                         .addGap(43, 43, 43)
                         .addComponent(jLabel5))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(infoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                            .addComponent(dateTxt)
-                            .addComponent(monTxt)
-                            .addComponent(yearTxt)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(createB))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(52, 52, 52)
-                                .addComponent(jLabel1)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(refreshB)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(refreshB)
+                        .addGap(259, 259, 259)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(createB)
+                            .addComponent(error)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(refreshB)))
-                .addGap(5, 5, 5)
-                .addComponent(yearTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(monTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(dateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(infoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(createB))
+                        .addComponent(jLabel1)
+                        .addGap(5, 5, 5)
+                        .addComponent(yearTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(monTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(infoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))))
+            .addComponent(jScrollPane1)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -166,10 +215,42 @@ public class eventsFrame extends javax.swing.JFrame {
 
     private void refreshBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBActionPerformed
         // TODO add your handling code here:
+        eList.organize();
+        model = new DefaultListModel();
+        for (Events e: eList.getList()){
+            model.addElement(e.toString());
+        }
+        allEvents = new JList(model);
+        
     }//GEN-LAST:event_refreshBActionPerformed
 
     private void createBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBActionPerformed
         // TODO add your handling code here:
+        if (yearTxt.getText().isEmpty() && monTxt.getText().isEmpty() || dateTxt.getText().isEmpty()||infoTxt.getText().isEmpty()){
+            error.setText("Error. Incorrect input.");
+            yearTxt.setText("");
+            monTxt.setText("");
+            dateTxt.setText("");
+            infoTxt.setText("");
+        }
+        else{
+            Events temp = new Events(Integer.parseInt(yearTxt.getText()), Integer.parseInt(monTxt.getText()), Integer.parseInt(dateTxt.getText()), infoTxt.getText());
+            try{
+                eList.addEvent(temp);
+                eList.record(temp, filePath);
+            }
+            catch (IOException e){
+
+            }
+            model.addElement(temp.toString());
+            allEvents = new JList(model);
+            yearTxt.setText("");
+            monTxt.setText("");
+            dateTxt.setText("");
+            infoTxt.setText("");
+            error.setText("");
+        }
+        
     }//GEN-LAST:event_createBActionPerformed
 
     /**
@@ -180,19 +261,21 @@ public class eventsFrame extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList allEvents;
     private javax.swing.JButton createB;
     private javax.swing.JTextField dateTxt;
+    private javax.swing.JLabel error;
     private javax.swing.JTextField infoTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField monTxt;
     private javax.swing.JButton refreshB;
+    private javax.swing.JLabel userLabel;
     private javax.swing.JTextField yearTxt;
     // End of variables declaration//GEN-END:variables
 }
