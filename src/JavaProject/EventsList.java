@@ -16,7 +16,7 @@ import java.io.*;
  *
  * @author line8847
  */
-public class EventsList extends Data implements Comparator {
+public class EventsList extends Data {
     private ArrayList<Events> eventList;
     
     public EventsList(){
@@ -36,20 +36,14 @@ public class EventsList extends Data implements Comparator {
         return eventList;
     }
     
-    public int compare(Object d, Object current){
-        
-        if (d.toString().equals(current.toString())){
-            return 1;
-        }
-        return -1;
-    }
+
     public void organize(){
         //Removes all expired events
         LocalDate current = LocalDate.now();
         ArrayList<Events> temp = new ArrayList<Events>();
         for (Events e: eventList){
             LocalDate d = e.getDate();
-            if ((compare(d, current) < 0)){
+            if (!(d.compareTo(current) < 0)){
                 temp.add(e);
             }
         }

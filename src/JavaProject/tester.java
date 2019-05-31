@@ -23,8 +23,11 @@ public class tester {
     public static void main(String[] args) throws IOException{
         // TODO code application logic here
      
-        File file = new File("src/JavaProject/test.txt");
-        file.createNewFile();
+        EventsList e = new EventsList();
+        e.addEvent(new Events(2010, 3, 4, "info"));
+        e.addEvent(new Events(2019, 8, 4, "info"));
+        e.organize();
+        System.out.println(e.getList());
         
     }
     

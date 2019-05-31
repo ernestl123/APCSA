@@ -38,7 +38,13 @@ public class UserList extends Data{
     
     @Override
     public boolean findData(String username, String pw) throws IOException{
-        
-        return super.findData(filePath, username+" " +pw);
+        Scanner file = new Scanner(new File(filePath));
+        while(file.hasNextLine()){
+            String temp = file.nextLine();
+            if (username.equals(temp.substring(0, temp.indexOf(" ")))){
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -44,6 +44,7 @@ public class JFrame extends javax.swing.JFrame{
         errorText = new javax.swing.JLabel();
         loginB = new javax.swing.JButton();
         createB = new javax.swing.JButton();
+        error = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,6 +73,12 @@ public class JFrame extends javax.swing.JFrame{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(loginB)
+                .addGap(18, 18, 18)
+                .addComponent(createB)
+                .addGap(135, 135, 135))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -88,14 +95,11 @@ public class JFrame extends javax.swing.JFrame{
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(pw, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(username))))
-                .addContainerGap(148, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(loginB)
-                .addGap(18, 18, 18)
-                .addComponent(createB)
-                .addGap(135, 135, 135))
+                            .addComponent(username)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(151, 151, 151)
+                        .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,7 +120,9 @@ public class JFrame extends javax.swing.JFrame{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginB)
                     .addComponent(createB))
-                .addContainerGap(108, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         pack();
@@ -131,7 +137,7 @@ public class JFrame extends javax.swing.JFrame{
                 setVisible(false);
             }
             else{
-                errorText.setText("Sorry. Incorrect username or password.");
+                error.setText("Sorry. Incorrect username or password.");
             }
         }
         catch(IOException e){
@@ -143,10 +149,10 @@ public class JFrame extends javax.swing.JFrame{
     private void createBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBActionPerformed
         // TODO add your handling code here:
         if (username.getText() == null || username.getText().isEmpty() || username.getText().indexOf(" ") >0){
-            errorText.setText("Error. Invalid username. ");
+            error.setText("Error. Invalid username. ");
         }
         else if (pw.getText() == null || username.getText().isEmpty()){
-            errorText.setText("Error. Invalid password.");
+            error.setText("Error. Invalid password.");
         }
         else{
             try{
@@ -155,7 +161,7 @@ public class JFrame extends javax.swing.JFrame{
                     
                     u.addU(username.getText(), pw.getText());
                     System.out.println("Created account.");
-                    
+                    error.setText("Account created.");
                     File file = new File("src/JavaProject/accounts/"+username.getText()+".txt");
                     file.createNewFile();
                     BufferedWriter writer = new BufferedWriter(new FileWriter("src/JavaProject/accounts/"+username.getText()+".txt", true)); 
@@ -163,7 +169,7 @@ public class JFrame extends javax.swing.JFrame{
                     writer.close();
                 }
                 else{
-                    errorText.setText("Sorry. There's already an account created with that username.");
+                    error.setText("Sorry. There's already an account created with that username.");
                 }
             }
             catch(IOException e){
@@ -215,6 +221,7 @@ public class JFrame extends javax.swing.JFrame{
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createB;
+    private javax.swing.JLabel error;
     private javax.swing.JLabel errorText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -75,6 +75,7 @@ public class eventsFrame extends javax.swing.JFrame {
         allEvents = new javax.swing.JList();
         userLabel = new javax.swing.JLabel();
         error = new javax.swing.JLabel();
+        deleteButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,6 +120,13 @@ public class eventsFrame extends javax.swing.JFrame {
 
         error.setForeground(new java.awt.Color(10, 0, 0));
 
+        deleteButton.setText("Delete All Events");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -137,7 +145,9 @@ public class eventsFrame extends javax.swing.JFrame {
                         .addGap(39, 39, 39)
                         .addComponent(createB)
                         .addGap(51, 51, 51)
-                        .addComponent(error))
+                        .addComponent(error)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(deleteButton))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -172,7 +182,8 @@ public class eventsFrame extends javax.swing.JFrame {
                         .addGap(259, 259, 259)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(createB)
-                            .addComponent(error)))
+                            .addComponent(error)
+                            .addComponent(deleteButton)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -216,10 +227,11 @@ public class eventsFrame extends javax.swing.JFrame {
     private void refreshBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBActionPerformed
         // TODO add your handling code here:
         eList.organize();
-        model = new DefaultListModel();
+        model.clear();
         for (Events e: eList.getList()){
             model.addElement(e.toString());
         }
+        
         allEvents = new JList(model);
         
     }//GEN-LAST:event_refreshBActionPerformed
@@ -234,24 +246,48 @@ public class eventsFrame extends javax.swing.JFrame {
             infoTxt.setText("");
         }
         else{
-            Events temp = new Events(Integer.parseInt(yearTxt.getText()), Integer.parseInt(monTxt.getText()), Integer.parseInt(dateTxt.getText()), infoTxt.getText());
+            
             try{
+                Events temp = new Events(Integer.parseInt(yearTxt.getText()), Integer.parseInt(monTxt.getText()), Integer.parseInt(dateTxt.getText()), infoTxt.getText());
                 eList.addEvent(temp);
                 eList.record(temp, filePath);
+                model.addElement(temp.toString());
+                allEvents = new JList(model);
+                yearTxt.setText("");
+                monTxt.setText("");
+                dateTxt.setText("");
+                infoTxt.setText("");
+                error.setText("");
             }
             catch (IOException e){
 
             }
-            model.addElement(temp.toString());
-            allEvents = new JList(model);
-            yearTxt.setText("");
-            monTxt.setText("");
-            dateTxt.setText("");
-            infoTxt.setText("");
-            error.setText("");
+            catch (NumberFormatException e){
+                error.setText("Error. Incorrect input.");
+            }
+            
         }
         
     }//GEN-LAST:event_createBActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        // TODO add your handling code here:
+        eList = new EventsList();
+        File file = new File(filePath); 
+        file.delete();
+        File f2 = new File(filePath);
+        try{
+            f2.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true)); 
+            writer.newLine();
+            writer.close();
+            model.clear();
+            allEvents = new JList(model);
+        }
+        catch (IOException e){
+            
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -264,6 +300,7 @@ public class eventsFrame extends javax.swing.JFrame {
     private javax.swing.JList allEvents;
     private javax.swing.JButton createB;
     private javax.swing.JTextField dateTxt;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JLabel error;
     private javax.swing.JTextField infoTxt;
     private javax.swing.JLabel jLabel1;
